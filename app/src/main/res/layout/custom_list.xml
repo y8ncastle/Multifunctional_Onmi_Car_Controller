@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="horizontal"
+        android:background="@drawable/round_square_shape_w_line3">
+
+        <TextView
+            android:id="@+id/data_date"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:gravity="center"
+            android:text="2001.01.01\n00:00:00"
+            android:textSize="14sp"
+            android:textColor="@color/grey"
+            android:fontFamily="@font/notosans_normal"/>
+
+        <View
+            android:id="@+id/data_view"
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/data_date"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="18dp"
+            android:background="#7C7C7C"/>
+
+        <LinearLayout
+            android:id="@+id/data_plate"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/data_view"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="40dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:text="측정된 정보"
+                android:textSize="13sp"
+                android:textColor="@color/grey"
+                android:fontFamily="@font/notosans_bold"/>
+
+            <TextView
+                android:id="@+id/data_set"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:text="온도, 습도, 미세먼지, 기울기, GPS"
+                android:textSize="13sp"
+                android:textColor="@color/grey"
+                android:fontFamily="@font/notosans_normal"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/data_click"
+        android:layout_width="40dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_alignParentRight="true"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="8dp"
+            android:layout_height="60dp"
+            android:src="@drawable/arrow2"/>
+    </LinearLayout>
+</RelativeLayout>

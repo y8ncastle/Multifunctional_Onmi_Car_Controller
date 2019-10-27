@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="500dp"
+    android:orientation="vertical"
+    android:background="@drawable/dialog_round_square_shape_m">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="7"
+        android:background="@drawable/dialog_round_square_shape">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="환경설정"
+            android:textSize="17sp"
+            android:textColor="@color/grey"
+            android:fontFamily="@font/notosans_bold"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="30dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:paddingBottom="30dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:paddingTop="8dp"
+                android:text="작동 모드"
+                android:textSize="14sp"
+                android:textColor="@color/grey"
+                android:fontFamily="@font/notosans_medium"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/four_way_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:textSize="14sp"
+                        android:textColor="@color/grey"
+                        android:fontFamily="@font/notosans_normal"
+                        android:button="@android:color/transparent"
+                        android:background="@drawable/custom_radio_button"/>
+
+                    <RadioButton
+                        android:id="@+id/joystick_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:textColor="@color/grey"
+                        android:fontFamily="@font/notosans_normal"
+                        android:button="@android:color/transparent"
+                        android:background="@drawable/custom_radio_button2"/>
+
+                    <RadioButton
+                        android:id="@+id/gyroscope_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:textColor="@color/grey"
+                        android:fontFamily="@font/notosans_normal"
+                        android:button="@android:color/transparent"
+                        android:background="@drawable/custom_radio_button3"/>
+                </RadioGroup>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/button_status"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="버튼 클릭 방식"
+                        android:textSize="15sp"
+                        android:textColor="@color/grey"
+                        android:fontFamily="@font/notosans_medium"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="카메라 기능"
+                android:textSize="14sp"
+                android:textColor="@color/grey"
+                android:fontFamily="@font/notosans_medium"/>
+
+            <ToggleButton
+                android:id="@+id/camera_toggle_button"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:layout_marginLeft="22dp"
+                android:layout_marginRight="22dp"
+                android:textColor="@android:color/transparent"
+                android:button="@android:color/transparent"
+                android:background="@drawable/custom_toggle_button"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="데이터\n자동 저장 기능"
+                android:textSize="14sp"
+                android:textColor="@color/grey"
+                android:fontFamily="@font/notosans_medium"/>
+
+            <ToggleButton
+                android:id="@+id/data_save_toggle_button"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="22dp"
+                android:layout_marginRight="22dp"
+                android:textColor="@android:color/transparent"
+                android:button="@android:color/transparent"
+                android:background="@drawable/custom_toggle_button"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:paddingTop="18dp"
+                android:text="데이터\n저장 주기"
+                android:textSize="14sp"
+                android:textColor="@color/grey"
+                android:fontFamily="@font/notosans_medium"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/set_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="5dp"
+                    android:includeFontPadding="false"
+                    android:textSize="15sp"
+                    android:hint="숫자"
+                    android:inputType="number"
+                    android:singleLine="true"
+                    android:maxLength="3"
+                    android:fontFamily="@font/notosans_normal"
+                    android:background="@drawable/custom_edit_text"
+                    android:theme="@style/CustomEditText"/>
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/number_second"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="초"
+                        android:textSize="15sp"
+                        android:textColor="@color/grey"
+                        android:fontFamily="@font/notosans_normal"
+                        android:button="@android:color/transparent"/>
+
+                    <RadioButton
+                        android:id="@+id/number_minute"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:text="분"
+                        android:textSize="15sp"
+                        android:textColor="@color/grey"
+                        android:fontFamily="@font/notosans_normal"
+                        android:button="@android:color/transparent"/>
+                </RadioGroup>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context=".Main">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.5"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/app_icon"/>
+
+        <TextView
+            android:id="@+id/ip_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="아이피 주소 및 포트 정보"
+            android:textSize="15sp"
+            android:textColor="@color/grey"
+            android:fontFamily="@font/notosans_medium"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="["
+                android:textSize="15sp"
+                android:textColor="@color/grey"
+                android:fontFamily="@font/notosans_medium"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="앱을 이용한 다기능 옴니 카 제어 설계"
+                android:textSize="15sp"
+                android:textColor="@color/pink"
+                android:fontFamily="@font/notosans_medium"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="]"
+                android:textSize="15sp"
+                android:textColor="@color/grey"
+                android:fontFamily="@font/notosans_medium"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginBottom="50dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/button_start"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:layout_marginBottom="40dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="작동 시작"
+            android:textSize="15dp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/notosans_medium"
+            android:background="@drawable/round_shape_button4"
+            android:onClick="MainButtonClicked"/>
+
+        <TextView
+            android:id="@+id/dialog_ipset"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:layout_marginBottom="40dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="아이피 정보 변경"
+            android:textSize="15dp"
+            android:textColor="@color/grey"
+            android:fontFamily="@font/notosans_medium"
+            android:background="@drawable/round_shape_button3"
+            android:onClick="MainButtonClicked"/>
+
+        <TextView
+            android:id="@+id/data_manage"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:layout_marginBottom="40dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="데이터 관리"
+            android:textSize="15dp"
+            android:textColor="@color/grey"
+            android:fontFamily="@font/notosans_medium"
+            android:background="@drawable/round_shape_button3"
+            android:onClick="MainButtonClicked"/>
+
+        <TextView
+            android:id="@+id/dialog_settings"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:layout_marginBottom="40dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="환경설정"
+            android:textSize="15dp"
+            android:textColor="@color/grey"
+            android:fontFamily="@font/notosans_medium"
+            android:background="@drawable/round_shape_button3"
+            android:onClick="MainButtonClicked"/>
+
+        <TextView
+            android:id="@+id/exit"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="앱 종료"
+            android:textSize="15dp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/notosans_medium"
+            android:background="@drawable/round_shape_button5"
+            android:onClick="MainButtonClicked"/>
+    </LinearLayout>
+</LinearLayout>

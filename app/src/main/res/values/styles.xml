@@ -1,0 +1,28 @@
+<resources>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="SettingNormal">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">#413D3C</item>
+        <item name="android:fontFamily">@font/notosans_normal</item>
+    </style>
+
+    <style name="SettingBold">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">#E5414B</item>
+        <item name="android:fontFamily">@font/notosans_bold</item>
+    </style>
+
+    <style name="CustomEditText" parent="Widget.AppCompat.EditText">
+        <item name="android:colorControlNormal">@android:color/transparent</item>
+        <item name="android:colorControlActivated">@color/pink</item>
+        <item name="android:textColorHighlight">#B7B7B7</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">#333333</item>
+        <item name="android:textColorHint">#B7B7B7</item>
+    </style>
+</resources>
