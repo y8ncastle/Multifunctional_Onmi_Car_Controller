@@ -27,7 +27,7 @@ public class Main extends Activity {
     TextView ip_info, b_start, d_ipset, b_data, b_exit;
 
     String db_main_adr, db_port;
-    int db_op_mode, db_cam_mode, db_data_save, db_s_term, db_term_unit;
+    int db_op_mode, db_cam_mode, db_data_save;
 
     private final long interval = 2000;
     private long backPressed;
@@ -75,12 +75,10 @@ public class Main extends Activity {
                     "port VARCHAR2(9), " +
                     "op_mode INTEGER, " +
                     "cam_mode INTEGER, " +
-                    "data_save INTEGER, " +
-                    "s_term INTEGER, " +
-                    "term_unit INTEGER);";
+                    "data_save INTEGER);";
             db.execSQL(sql);
 
-            sql = "SELECT main_adr, port, op_mode, cam_mode, data_save, s_term, term_unit FROM " + tableName + ";";
+            sql = "SELECT main_adr, port, op_mode, cam_mode, data_save FROM " + tableName + ";";
             resultset = db.rawQuery(sql, null);
             dbCount = resultset.getCount();
 
@@ -92,13 +90,11 @@ public class Main extends Activity {
                 db_op_mode = resultset.getInt(2);
                 db_cam_mode = resultset.getInt(3);
                 db_data_save = resultset.getInt(4);
-                db_s_term = resultset.getInt(5);
-                db_term_unit = resultset.getInt(6);
 
                 url = "http://" + db_main_adr + ":" + db_port;
             } else {
-                sql = "INSERT INTO " + tableName + " values (" +
-                        "'-', '-', 1, 1, 1, 1, 1);";
+                sql = "INSERT INTO " + tableName + " VALUES (" +
+                        "'-', '-', 1, 1, 1);";
                 db.execSQL(sql);
 
                 db_main_adr = "-";
@@ -106,8 +102,6 @@ public class Main extends Activity {
                 db_op_mode = 1;
                 db_cam_mode = 1;
                 db_data_save = 1;
-                db_s_term = 1;
-                db_term_unit = 1;
             }
 
             if (db_main_adr.equals("-") == false)
@@ -193,15 +187,11 @@ public class Main extends Activity {
         final RadioButton b_four_way = (RadioButton) dialog.findViewById(R.id.four_way_button);
         final RadioButton b_joystick = (RadioButton) dialog.findViewById(R.id.joystick_button);
         final RadioButton b_gyroscope = (RadioButton) dialog.findViewById(R.id.gyroscope_button);
-        final RadioButton b_second = (RadioButton) dialog.findViewById(R.id.number_second);
-        final RadioButton b_minute = (RadioButton) dialog.findViewById(R.id.number_minute);
 
         final ToggleButton b_camera = (ToggleButton) dialog.findViewById(R.id.camera_toggle_button);
         final ToggleButton b_data_save = (ToggleButton)dialog.findViewById(R.id.data_save_toggle_button);
 
         final TextView b_status = (TextView) dialog.findViewById(R.id.button_status);
-
-        final EditText set_number = (EditText)dialog.findViewById(R.id.set_number);
 
         Toast.makeText(getApplicationContext(), "모든 설정은 클릭하는 순간 적용되며\n환경설정 창 밖을 클릭했을 때 창이 사라집니다", Toast.LENGTH_LONG).show();
 
@@ -329,24 +319,10 @@ public class Main extends Activity {
             }
         });
 
-        if (db_data_save == 1) {
+        if (db_data_save == 1)
             b_data_save.setChecked(false);
-
-            b_second.setTextAppearance(getApplicationContext(), R.style.SettingNormal);
-            b_minute.setTextAppearance(getApplicationContext(), R.style.SettingNormal);
-        } else if (db_data_save == 2) {
+        else if (db_data_save == 2)
             b_data_save.setChecked(true);
-
-            set_number.setText(String.valueOf(db_s_term));
-
-            if (db_term_unit == 1) {
-                b_second.setTextAppearance(getApplicationContext(), R.style.SettingNormal);
-                b_minute.setTextAppearance(getApplicationContext(), R.style.SettingBold);
-            } else if (db_term_unit == 2) {
-                b_second.setTextAppearance(getApplicationContext(), R.style.SettingBold);
-                b_minute.setTextAppearance(getApplicationContext(), R.style.SettingNormal);
-            }
-        }
 
         b_data_save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -360,19 +336,9 @@ public class Main extends Activity {
                         sql = "UPDATE " + tableName + " SET data_save=2;";
                         db.execSQL(sql);
 
-                        db.close();
-
-                        set_number.setText(String.valueOf(db_s_term));
-
-                        if (db_term_unit == 1) {
-                            b_second.setTextAppearance(getApplicationContext(), R.style.SettingNormal);
-                            b_minute.setTextAppearance(getApplicationContext(), R.style.SettingBold);
-                        } else if (db_term_unit == 2) {
-                            b_second.setTextAppearance(getApplicationContext(), R.style.SettingBold);
-                            b_minute.setTextAppearance(getApplicationContext(), R.style.SettingNormal);
-                        }
-
                         Toast.makeText(getApplicationContext(), "데이터 자동 저장 기능을 켰습니다", Toast.LENGTH_SHORT).show();
+
+                        db.close();
                     } catch (Exception e) {
                         e.getStackTrace();
                     }
@@ -386,118 +352,10 @@ public class Main extends Activity {
                         sql = "UPDATE " + tableName + " SET data_save=1;";
                         db.execSQL(sql);
 
-                        sql = "UPDATE " + tableName + " SET s_term=1;";
-                        db.execSQL(sql);
-
-                        sql = "UPDATE " + tableName + " SET term_unit=1;";
-                        db.execSQL(sql);
-
-                        db.close();
-
-                        set_number.setText("");
-                        b_second.setTextAppearance(getApplicationContext(), R.style.SettingNormal);
-                        b_minute.setTextAppearance(getApplicationContext(), R.style.SettingNormal);
-
-                        db_s_term = 1;
-                        db_term_unit = 1;
-
                         Toast.makeText(getApplicationContext(), "데이터 자동 저장 기능을 껐습니다", Toast.LENGTH_SHORT).show();
+                        db.close();
                     } catch (Exception e) {
                         e.getStackTrace();
-                    }
-                }
-            }
-        });
-
-        b_second.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (db_data_save == 2) {
-                    String temp_num = set_number.getText().toString();
-
-                    if (temp_num.length() > 0) {
-                        if (temp_num.equals("0") == false) {
-                            int t_temp_num = Integer.parseInt(temp_num);
-
-                            b_second.setTextAppearance(getApplicationContext(), R.style.SettingBold);
-                            b_minute.setTextAppearance(getApplicationContext(), R.style.SettingNormal);
-
-                            db = openOrCreateDatabase(dbName, MODE_PRIVATE, null);
-
-                            try {
-                                sql = "UPDATE " + tableName + " SET s_term=" + t_temp_num + ";";
-                                db.execSQL(sql);
-
-                                sql = "UPDATE " + tableName + " SET term_unit=2;";
-                                db.execSQL(sql);
-
-                                db.close();
-
-                                db_s_term = t_temp_num;
-                                db_term_unit = 2;
-
-                                Toast.makeText(getApplicationContext(), "데이터 자동 저장 주기가\n" + "'" + temp_num + "' 초로 변경되었습니다", Toast.LENGTH_SHORT).show();
-                            } catch (Exception e) {
-                                e.getStackTrace();
-                            }
-                        } else {
-                            Toast.makeText(getApplicationContext(), "저장 주기는 0보다 커야 합니다", Toast.LENGTH_SHORT).show();
-
-                            b_second.setTextAppearance(getApplicationContext(), R.style.SettingNormal);
-                            b_minute.setTextAppearance(getApplicationContext(), R.style.SettingNormal);
-                        }
-                    } else {
-                        b_second.setTextAppearance(getApplicationContext(), R.style.SettingNormal);
-                        b_minute.setTextAppearance(getApplicationContext(), R.style.SettingNormal);
-
-                        Toast.makeText(getApplicationContext(), "데이터 저장 주기 시간을 먼저 입력해주세요", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-        });
-
-        b_minute.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (db_data_save == 2) {
-                    String temp_num = set_number.getText().toString();
-
-                    if (temp_num.length() > 0) {
-                        if (temp_num.equals("0") == false) {
-                            int t_temp_num = Integer.parseInt(temp_num);
-
-                            b_second.setTextAppearance(getApplicationContext(), R.style.SettingNormal);
-                            b_minute.setTextAppearance(getApplicationContext(), R.style.SettingBold);
-
-                            db = openOrCreateDatabase(dbName, MODE_PRIVATE, null);
-
-                            try {
-                                sql = "UPDATE " + tableName + " SET s_term=" + t_temp_num + ";";
-                                db.execSQL(sql);
-
-                                sql = "UPDATE " + tableName + " SET term_unit=1;";
-                                db.execSQL(sql);
-
-                                db.close();
-
-                                db_s_term = t_temp_num;
-                                db_term_unit = 1;
-
-                                Toast.makeText(getApplicationContext(), "데이터 자동 저장 주기가\n" + "'" + temp_num + "' 분으로 변경되었습니다", Toast.LENGTH_SHORT).show();
-                            } catch (Exception e) {
-                                e.getStackTrace();
-                            }
-                        } else {
-                            Toast.makeText(getApplicationContext(), "저장 주기는 0보다 커야 합니다", Toast.LENGTH_SHORT).show();
-
-                            b_second.setTextAppearance(getApplicationContext(), R.style.SettingNormal);
-                            b_minute.setTextAppearance(getApplicationContext(), R.style.SettingNormal);
-                        }
-                    } else {
-                        b_second.setTextAppearance(getApplicationContext(), R.style.SettingNormal);
-                        b_minute.setTextAppearance(getApplicationContext(), R.style.SettingNormal);
-
-                        Toast.makeText(getApplicationContext(), "데이터 저장 주기 시간을 먼저 입력해주세요", Toast.LENGTH_SHORT).show();
                     }
                 }
             }

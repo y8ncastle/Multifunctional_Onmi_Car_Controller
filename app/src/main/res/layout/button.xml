@@ -92,7 +92,7 @@
                 android:layout_weight="0.4"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/square_shape_w_line"
-                android:visibility="gone">
+                android:visibility="visible">
             </WebView>
 
             <LinearLayout
@@ -103,7 +103,7 @@
                 android:layout_marginBottom="20dp"
                 android:orientation="horizontal"
                 android:background="@drawable/square_shape_w_line"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -196,7 +196,7 @@
                     android:layout_width="80dp"
                     android:layout_height="55dp"
                     android:gravity="center"
-                    android:text="촬영"
+                    android:text="정지"
                     android:textSize="18sp"
                     android:textColor="@color/white"
                     android:background="@drawable/round_shape_button"
@@ -243,6 +243,7 @@
                             android:fontFamily="@font/notosans_normal"/>
 
                         <TextView
+                            android:id="@+id/b_temp"
                             android:layout_width="match_parent"
                             android:layout_height="25dp"
                             android:gravity="center"
@@ -282,6 +283,7 @@
                             android:fontFamily="@font/notosans_normal"/>
 
                         <TextView
+                            android:id="@+id/b_humi"
                             android:layout_width="match_parent"
                             android:layout_height="25dp"
                             android:gravity="center"
@@ -309,18 +311,19 @@
                         <ImageView
                             android:layout_width="match_parent"
                             android:layout_height="12dp"
-                            android:src="@drawable/dust"/>
+                            android:src="@drawable/gps"/>
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="25dp"
                             android:gravity="center"
-                            android:text="미세먼지 농도"
+                            android:text="장애물 거리"
                             android:textSize="12sp"
                             android:textColor="@color/grey"
                             android:fontFamily="@font/notosans_normal"/>
 
                         <TextView
+                            android:id="@+id/distance"
                             android:layout_width="match_parent"
                             android:layout_height="25dp"
                             android:gravity="center"
@@ -360,12 +363,13 @@
                             android:fontFamily="@font/notosans_normal"/>
 
                         <TextView
+                            android:id="@+id/sensor_status"
                             android:layout_width="match_parent"
                             android:layout_height="25dp"
                             android:gravity="center"
-                            android:text="정상"
+                            android:text="비정상"
                             android:textSize="13sp"
-                            android:textColor="@color/green"
+                            android:textColor="@color/pink"
                             android:fontFamily="@font/notosans_bold"/>
                     </LinearLayout>
                 </LinearLayout>
@@ -381,7 +385,7 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:gravity="center"
-                        android:text="저장"
+                        android:text="수집"
                         android:fontFamily="@font/notosans_bold"
                         android:background="@drawable/round_shape_button3"
                         android:onClick="ButtonClicked"/>

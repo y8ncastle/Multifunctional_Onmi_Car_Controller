@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -21,6 +23,7 @@ public class Button extends Activity {
     SQLiteDatabase db;
     String dbName = "OMNI";
     String tableName = "Setting";
+    String tableName2 = "Data";
     String sql;
     int dbCount;
     Cursor resultset;
@@ -30,14 +33,17 @@ public class Button extends Activity {
     WebView web, web_w;
 
     TextView n_date, n_time, b_shutter, b_back, b_info_save, t_direction;
+    TextView b_temp, b_humi;
 
     ImageView b_forward, b_left, b_right, b_rear, b_ccw, b_cw;
 
-    String now_date, now_time, temp_direction;
+    String now_date, now_time;
     String db_main_adr, db_port;
     String url = "-";
     String url_b = "-";
-    int db_cam_mode, db_data_save, db_s_term, db_term_unit;
+    int db_cam_mode, db_data_save;
+
+    String temp_d[];
 
     long now;
 
@@ -90,14 +96,13 @@ public class Button extends Activity {
         web_w.setWebChromeClient(new WebChromeClient());
         web_w.getSettings().setUserAgentString("Android WebView");
         web_w.getSettings().setDomStorageEnabled(true);
+        web_w.addJavascriptInterface(new MyJavaScriptInterface(), "JS");
         web_w.loadUrl(url_b);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent motion) {
         int touch_count = motion.getPointerCount();
-
-        temp_direction = "";
 
         if (touch_count > 2)
             touch_count = 2;
@@ -323,7 +328,9 @@ public class Button extends Activity {
     protected void ButtonClicked(View v) {
         switch (v.getId()) {
             case R.id.button_shutter:
-                Toast.makeText(getApplicationContext(), "촬영 테스트", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "강제 정지", Toast.LENGTH_SHORT).show();
+                t_direction.setText("정지");
+                web_w.loadUrl("javascript:Stop()");
                 break;
             case R.id.button_back:
                 finish();
@@ -338,7 +345,7 @@ public class Button extends Activity {
                 break;
             case R.id.info_save:
                 web_w.loadUrl("javascript:Sensor()");
-                Toast.makeText(getApplicationContext(), "저장 테스트", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "온/습도 데이터를 불러오는 중입니다", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -354,6 +361,8 @@ public class Button extends Activity {
         b_back = (TextView)findViewById(R.id.button_back);
         b_info_save = (TextView)findViewById(R.id.info_save);
         t_direction = (TextView)findViewById(R.id.direction);
+        b_temp = (TextView)findViewById(R.id.b_temp);
+        b_humi = (TextView)findViewById(R.id.b_humi);
 
         b_forward = (ImageView)findViewById(R.id.button_forward);
         b_left = (ImageView)findViewById(R.id.button_left);
@@ -382,7 +391,7 @@ public class Button extends Activity {
         db = openOrCreateDatabase(dbName, MODE_PRIVATE, null);
 
         try {
-            sql = "SELECT main_adr, port, cam_mode, data_save, s_term, term_unit FROM " + tableName + ";";
+            sql = "SELECT main_adr, port, cam_mode, data_save FROM " + tableName + ";";
             resultset = db.rawQuery(sql, null);
             dbCount = resultset.getCount();
 
@@ -393,15 +402,11 @@ public class Button extends Activity {
                 String t_port = resultset.getString(1);
                 int t_cam_mode = resultset.getInt(2);
                 int t_data_save = resultset.getInt(3);
-                int t_s_term = resultset.getInt(4);
-                int t_term_unit = resultset.getInt(5);
 
                 db_main_adr = t_main_adr;
                 db_port = t_port;
                 db_cam_mode = t_cam_mode;
                 db_data_save = t_data_save;
-                db_s_term = t_s_term;
-                db_term_unit = t_term_unit;
 
                 int temp_port = Integer.parseInt(t_port) + 1;
                 url = "http://" + db_main_adr + ":" + String.valueOf(temp_port) + "/?action=stream";
@@ -434,5 +439,55 @@ public class Button extends Activity {
         web.getSettings().setUserAgentString("Android WebView");
         web.getSettings().setDomStorageEnabled(true);
         web.loadUrl(url);
+    }
+
+    final class MyJavaScriptInterface {
+        MyJavaScriptInterface() {
+
+        }
+
+        @JavascriptInterface
+        public void callAndroid(final String str) {
+            Handler handler = new Handler();
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    temp_d = str.split(",");
+
+                    float temp_t = Float.parseFloat(temp_d[0]);
+                    float temp_h = Float.parseFloat(temp_d[1]);
+
+                    temp_d[0] = String.format("%.2f", temp_t);
+                    temp_d[1] = String.format("%.2f", temp_h);
+
+                    b_temp.setText(temp_d[0] + " ℃");
+                    b_humi.setText(temp_d[1] + " %");
+
+                    if (db_data_save == 2) {
+                        db = openOrCreateDatabase(dbName, MODE_PRIVATE, null);
+
+                        try {
+                            sql = "CREATE TABLE IF NOT EXISTS " + tableName2 + " (date VARCHAR2(20), tem VARCHAR2(10), humi VARCHAR2(10), distance VARCHAR2(10), " +
+                                    "obstacle VARCHAR2(2));";
+                            db.execSQL(sql);
+
+                            now = System.currentTimeMillis();
+
+                            Date date = new Date (now);
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일 kk시 mm분 ss초");
+                            now_date = sdf.format(date);
+                            String temp_date = now_date;
+
+                            sql = "INSERT INTO " + tableName2 + " VALUES ('" + temp_date + "', '" + temp_d[0] + "', '" + temp_d[1] + "', '-', 'X');";
+                            db.execSQL(sql);
+
+                            db.close();
+                        } catch (Exception e) {
+                            e.getStackTrace();
+                        }
+                    }
+                }
+            });
+        }
     }
 }

@@ -10,9 +10,11 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -39,17 +41,20 @@ public class Gyro extends Activity {
     private double time;
     private double dt; // 센서가 상태를 감지하는 시간 간격
 
-    LinearLayout cam_screen_off;
+    LinearLayout g_plate, g_plate2, cam_screen_off;
 
     WebView web, web_w;
 
-    TextView n_date, n_time, b_shutter, b_back, b_info_save;
-    TextView gyro_print;
+    TextView n_date, n_time, b_shutter, b_back, g_info_save;
+    TextView gyro_print, t_direction;
+    TextView g_temp, g_humi;
 
     String now_date, now_time;
     String url = "-", url_b = "-";
     String db_main_adr, db_port;
-    int db_cam_mode, db_data_save, db_s_term, db_term_unit;
+    int db_cam_mode, db_data_save;
+
+    String temp_d[];
 
     long now;
 
@@ -105,7 +110,7 @@ public class Gyro extends Activity {
         sensor = sm.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
         sel = new GyroscopeListener();
 
-        findViewById(R.id.button_shutter2).setOnTouchListener(new View.OnTouchListener() {
+        findViewById(R.id.gyro_shutter).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent e) {
                 switch (e.getAction()) {
@@ -116,6 +121,8 @@ public class Gyro extends Activity {
                     case MotionEvent.ACTION_UP:
                         sm.unregisterListener(sel);
                         x = y = z = 0;
+                        web_w.loadUrl("javascript:Stop()");
+                        t_direction.setText("정지");
                         gyro_print.setText("회전축 값\n출력화면");
                         break;
                 }
@@ -134,6 +141,7 @@ public class Gyro extends Activity {
         web_w.setWebChromeClient(new WebChromeClient());
         web_w.getSettings().setUserAgentString("Android WebView");
         web_w.getSettings().setDomStorageEnabled(true);
+        web_w.addJavascriptInterface(new MyJavaScriptInterface(), "JS");
         web_w.loadUrl(url_b);
     }
 
@@ -166,6 +174,8 @@ public class Gyro extends Activity {
 
                 gyro_print.setText("[기준회전축X]\n" + String.format("%.1f", Math.toDegrees(x)) + "\n\n[기준회전축Y]\n" + String.format("%.1f", Math.toDegrees(y)) +
                         "\n\n[기준회전축Z]\n" + String.format("%.1f", Math.toDegrees(z)));
+
+                DirectionCheck(x, y, z);
             }
         }
 
@@ -176,14 +186,19 @@ public class Gyro extends Activity {
     }
 
     public void init() {
+        g_plate = (LinearLayout)findViewById(R.id.gyro_plate);
+        g_plate2 = (LinearLayout)findViewById(R.id.gyro_plate2);
         cam_screen_off = (LinearLayout)findViewById(R.id.camera_screen_off3);
 
         n_date = (TextView)findViewById(R.id.now_date);
         n_time = (TextView)findViewById(R.id.now_time);
-        b_shutter = (TextView)findViewById(R.id.button_shutter2);
-        b_back = (TextView)findViewById(R.id.button_back2);
-        b_info_save = (TextView)findViewById(R.id.info_save2);
+        b_shutter = (TextView)findViewById(R.id.gyro_shutter);
+        b_back = (TextView)findViewById(R.id.gyro_back);
+        g_info_save = (TextView)findViewById(R.id.g_info_save);
+        t_direction = (TextView)findViewById(R.id.g_direction);
         gyro_print = (TextView)findViewById(R.id.gyro_print);
+        g_temp = (TextView)findViewById(R.id.g_temp);
+        g_humi = (TextView)findViewById(R.id.g_humi);
 
         web = (WebView)findViewById(R.id.camera_screen3);
         web_w = (WebView)findViewById(R.id.webiopi_webview3);
@@ -219,7 +234,7 @@ public class Gyro extends Activity {
         db = openOrCreateDatabase(dbName, MODE_PRIVATE, null);
 
         try {
-            sql = "SELECT main_adr, port, cam_mode, data_save, s_term, term_unit FROM " + tableName + ";";
+            sql = "SELECT main_adr, port, cam_mode, data_save FROM " + tableName + ";";
             resultset = db.rawQuery(sql, null);
             dbCount = resultset.getCount();
 
@@ -230,15 +245,11 @@ public class Gyro extends Activity {
                 String t_port = resultset.getString(1);
                 int t_cam_mode = resultset.getInt(2);
                 int t_data_save = resultset.getInt(3);
-                int t_s_term = resultset.getInt(4);
-                int t_term_unit = resultset.getInt(5);
 
                 db_main_adr = t_main_adr;
                 db_port = t_port;
                 db_cam_mode = t_cam_mode;
                 db_data_save = t_data_save;
-                db_s_term = t_s_term;
-                db_term_unit = t_term_unit;
 
                 int temp_port = Integer.parseInt(t_port) + 1;
                 url = "http://" + db_main_adr + ":" + String.valueOf(temp_port) + "/?action=stream";
@@ -259,12 +270,58 @@ public class Gyro extends Activity {
         }
     }
 
+    protected void DirectionCheck(double a, double b, double c) {
+        int temp_a = Math.abs((int)a);
+        int temp_b = Math.abs((int)b);
+        int temp_c = Math.abs((int)c);
+
+        if ((Math.max(temp_a, temp_b) == temp_a) && (Math.max(temp_a, temp_c) == temp_a)) {
+            if (a >= 0) {
+                t_direction.setText("오른쪽 이동");
+                web_w.loadUrl("javascript:Right()");
+            }
+            else {
+                t_direction.setText("왼쪽 이동");
+                web_w.loadUrl("javascript:Left()");
+            }
+        }
+        else if ((Math.max(temp_b, temp_a) == temp_b) && (Math.max(temp_b, temp_c) == temp_b)) {
+            if (b >= 0) {
+                t_direction.setText("앞으로 이동");
+                web_w.loadUrl("javascript:Forward()");
+            }
+            else {
+                t_direction.setText("뒤로 이동");
+                web_w.loadUrl("javascript:Backward()");
+            }
+        }
+        else if ((Math.max(temp_c, temp_a) == temp_c) && (Math.max(temp_c, temp_b) == temp_c)) {
+            if (c >= 0) {
+                t_direction.setText("360도 역회전");
+                web_w.loadUrl("javascript:RRotate()");
+            }
+            else {
+                t_direction.setText("360도 회전");
+                web_w.loadUrl("javascript:Rotate()");
+            }
+        }
+    }
+
     protected void ButtonClicked(View v) {
         switch (v.getId()) {
-            case R.id.info_save2:
-                Toast.makeText(getApplicationContext(), "저장 테스트", Toast.LENGTH_SHORT).show();
+            case R.id.g_info_save:
+                web_w.loadUrl("javascript:Sensor()");
+                Toast.makeText(getApplicationContext(), "온/습도 데이터를 불러오는 중입니다", Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.button_back2:
+            case R.id.gyro_plate:
+                g_plate.setVisibility(View.GONE);
+                g_plate2.setVisibility(View.VISIBLE);
+                break;
+            case R.id.gyro_plate2:
+                g_plate.setVisibility(View.VISIBLE);
+                g_plate2.setVisibility(View.GONE);
+                break;
+            case R.id.gyro_back:
                 finish();
                 break;
         }
@@ -282,5 +339,31 @@ public class Gyro extends Activity {
         web.getSettings().setUserAgentString("Android WebView");
         web.getSettings().setDomStorageEnabled(true);
         web.loadUrl(url);
+    }
+
+    final class MyJavaScriptInterface {
+        MyJavaScriptInterface() {
+
+        }
+
+        @JavascriptInterface
+        public void callAndroid(final String str) {
+            Handler handler = new Handler();
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    temp_d = str.split(",");
+
+                    float temp_t = Float.parseFloat(temp_d[0]);
+                    float temp_h = Float.parseFloat(temp_d[1]);
+
+                    temp_d[0] = String.format("%.2f", temp_t);
+                    temp_d[1] = String.format("%.2f", temp_h);
+
+                    g_temp.setText(temp_d[0] + " ℃");
+                    g_humi.setText(temp_d[1] + " %");
+                }
+            });
+        }
     }
 }

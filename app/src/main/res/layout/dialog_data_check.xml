@@ -3,7 +3,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="350dp"
-    android:layout_height="450dp"
+    android:layout_height="420dp"
     android:orientation="vertical"
     android:background="@drawable/dialog_round_square_shape_m">
 
@@ -18,6 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
+            android:text="데이터 내용 확인"
             android:textSize="17sp"
             android:textColor="@color/grey"
             android:fontFamily="@font/notosans_bold"/>
@@ -83,7 +84,7 @@
                 android:layout_height="40dp"
                 android:includeFontPadding="false"
                 android:hint="단위 (%)"
-                android:maxLength="3"
+                android:maxLength="5"
                 android:singleLine="true"
                 android:inputType="numberDecimal"
                 android:fontFamily="@font/notosans_normal"
@@ -101,48 +102,20 @@
                 android:layout_width="100dp"
                 android:layout_height="40dp"
                 android:gravity="center"
-                android:text="미세먼지 농도"
+                android:text="장애물 거리"
                 android:textSize="14sp"
                 android:textColor="@color/grey"
                 android:fontFamily="@font/notosans_medium"/>
 
             <EditText
-                android:id="@+id/data_check_dust"
+                android:id="@+id/data_check_distance"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:includeFontPadding="false"
-                android:hint="단위 (㎍/m³)"
+                android:hint="단위 (cm)"
                 android:maxLength="10"
                 android:singleLine="true"
                 android:inputType="numberDecimal"
-                android:fontFamily="@font/notosans_normal"
-                android:background="@drawable/custom_edit_text"
-                android:theme="@style/CustomEditText"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="100dp"
-                android:layout_height="40dp"
-                android:gravity="center"
-                android:text="위치"
-                android:textSize="16sp"
-                android:textColor="@color/grey"
-                android:fontFamily="@font/notosans_medium"/>
-
-            <EditText
-                android:id="@+id/data_check_location"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:includeFontPadding="false"
-                android:hint="형식 (도˚분'초/방향)"
-                android:maxLength="50"
-                android:singleLine="true"
                 android:fontFamily="@font/notosans_normal"
                 android:background="@drawable/custom_edit_text"
                 android:theme="@style/CustomEditText"/>
@@ -186,25 +159,11 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/data_check_modify"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="7.5dp"
-                android:layout_marginRight="7.5dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="수정"
-                android:textSize="15sp"
-                android:textColor="@color/white"
-                android:fontFamily="@font/notosans_bold"
-                android:background="@drawable/round_shape_button4"/>
-
-            <TextView
                 android:id="@+id/data_check_delete"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="7.5dp"
-                android:layout_marginRight="7.5dp"
+                android:layout_marginRight="15dp"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="삭제"
@@ -217,7 +176,7 @@
                 android:id="@+id/data_check_cancel"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="7.5dp"
+                android:layout_marginLeft="15dp"
                 android:layout_marginRight="7.5dp"
                 android:layout_weight="1"
                 android:gravity="center"

@@ -41,7 +41,6 @@
             android:layout_toRightOf="@id/data_view"
             android:gravity="center_vertical"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="40dp"
             android:orientation="vertical">
 
             <TextView
@@ -54,29 +53,14 @@
                 android:fontFamily="@font/notosans_bold"/>
 
             <TextView
-                android:id="@+id/data_set"
+                android:id="@+id/data_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:includeFontPadding="false"
-                android:text="온도, 습도, 미세먼지, 기울기, GPS"
+                android:text="온도, 습도, 장애물 센서"
                 android:textSize="13sp"
                 android:textColor="@color/grey"
                 android:fontFamily="@font/notosans_normal"/>
         </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/data_click"
-        android:layout_width="40dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_alignParentRight="true"
-        android:gravity="center">
-
-        <ImageView
-            android:layout_width="8dp"
-            android:layout_height="60dp"
-            android:src="@drawable/arrow2"/>
     </LinearLayout>
 </RelativeLayout>
